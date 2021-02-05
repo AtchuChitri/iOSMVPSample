@@ -10,5 +10,8 @@ Presenter : The presenter will be in charge of all the logic , including respond
 Model : the model role will be exactly the same
 
 MVP Architecture
+
+
+
 [![Mvp-Architecture.png](https://i.postimg.cc/DZ8krmt4/Mvp-Architecture.png)](https://postimg.cc/1nhjPRRy)
 
