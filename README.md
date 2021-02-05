@@ -9,4 +9,5 @@ View : The view now consists of both views and view controllers, with all UI set
 Presenter : The presenter will be in charge of all the logic , including responding to user actions and updating the UI (via delegate). and the most important is that our presenter will not be UIKit dependent. which means well isolated, hence easily testable ;)
 Model : the model role will be exactly the same
 
+![Screenshot]()
 
