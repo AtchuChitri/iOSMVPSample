@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class FollowersListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
