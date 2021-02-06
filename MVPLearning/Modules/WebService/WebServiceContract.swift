@@ -6,16 +6,29 @@
 //
 
 import Foundation
+import Alamofire
 
-public typealias WebServiceCompletion = (Result<Data, Error>) -> Void
+
+public struct ErrorMessage {
+static let unknownAPIError = "Service is currently unavailable."
+static let unavailableData = "Data is currently unavailable"
+static let unauthenticatedError = "Your session has expired. Please re-login."
+}
+
+public typealias WebServiceCompletion = (Result<Data?, Error>) -> Void
 
 
 protocol WebServiceContract {
+        
 }
 
 struct WebService: WebServiceContract {
 
-    func processService(url:String, completion: @escaping WebServiceCompletion) {
+    func processService(urI:String, completion: @escaping WebServiceCompletion) {
+    
+        AF.request(Constant.baseUrl + urI).response { response in
+            debugPrint(response)
+        }
 
     }
     

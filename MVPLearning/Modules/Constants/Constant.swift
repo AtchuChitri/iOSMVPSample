@@ -9,4 +9,6 @@ import Foundation
 
 class Constant {
  static var baseUrl =  "https://api.github.com/"
+ static var followers = "users/octocat/followers"
+    
 }
