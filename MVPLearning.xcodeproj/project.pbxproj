@@ -21,6 +21,7 @@
 		3796F84325CCE42F00CBB413 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 3796F84225CCE42F00CBB413 /* AlamofireImage */; };
 		3796F84B25CCE4F400CBB413 /* WebServiceContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3796F84A25CCE4F400CBB413 /* WebServiceContract.swift */; };
 		3796F85425CCE5D500CBB413 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3796F85325CCE5D500CBB413 /* Constant.swift */; };
+		6B6E26B525CE2DB0005AC55C /* ReleaseLog in Resources */ = {isa = PBXBuildFile; fileRef = 6B6E26B425CE2DB0005AC55C /* ReleaseLog */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		3796F83325CCE17B00CBB413 /* FollowersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersModel.swift; sourceTree = "<group>"; };
 		3796F84A25CCE4F400CBB413 /* WebServiceContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceContract.swift; sourceTree = "<group>"; };
 		3796F85325CCE5D500CBB413 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		6B6E26B425CE2DB0005AC55C /* ReleaseLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ReleaseLog; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				3796F82A25CCE06000CBB413 /* Presenters */,
 				3796F82925CCE05700CBB413 /* Views */,
 				3796F82825CCE05100CBB413 /* Models */,
+				6B6E26B325CE2D6C005AC55C /* ReleaseLog */,
 				3796F7F225CCDC3900CBB413 /* AppDelegate.swift */,
 				3796F7F425CCDC3900CBB413 /* SceneDelegate.swift */,
 				3796F7F825CCDC3900CBB413 /* Main.storyboard */,
@@ -190,6 +193,14 @@
 				3796F85325CCE5D500CBB413 /* Constant.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		6B6E26B325CE2D6C005AC55C /* ReleaseLog */ = {
+			isa = PBXGroup;
+			children = (
+				6B6E26B425CE2DB0005AC55C /* ReleaseLog */,
+			);
+			path = ReleaseLog;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3796F7FF25CCDC3A00CBB413 /* LaunchScreen.storyboard in Resources */,
+				6B6E26B525CE2DB0005AC55C /* ReleaseLog in Resources */,
 				3796F7FC25CCDC3A00CBB413 /* Assets.xcassets in Resources */,
 				3796F7FA25CCDC3900CBB413 /* Main.storyboard in Resources */,
 			);
