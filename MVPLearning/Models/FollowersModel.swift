@@ -45,4 +45,4 @@ struct FollowersModel: Codable {
 
 
 
-//typealias FollowersModelArray = [FollowersModel]
+typealias FollowersModelArray = [FollowersModel]

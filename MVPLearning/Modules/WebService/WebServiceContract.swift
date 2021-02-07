@@ -19,17 +19,36 @@ public typealias WebServiceCompletion = (Result<Data?, Error>) -> Void
 
 
 protocol WebServiceContract {
+    func processService(endPoint:String, completion: @escaping WebServiceCompletion) 
+
         
 }
 
 struct WebService: WebServiceContract {
 
-    func processService(urI:String, completion: @escaping WebServiceCompletion) {
+    func processService(endPoint:String, completion: @escaping WebServiceCompletion) {
     
-        AF.request(Constant.baseUrl + urI).response { response in
-            debugPrint(response)
+        AF.request(Constant.baseUrl + endPoint).response { response in
+            switch response.result {
+            case .success(let res):
+                if let code = response.response?.statusCode{
+                    switch code {
+                    case 200...299:
+                        do {
+                            completion(.success(res))
+                        } catch let error {
+                            completion(.failure(error))
+                        }
+                    default:
+                     let error = NSError(domain: response.debugDescription, code: code, userInfo: response.response?.allHeaderFields as? [String: Any])
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+            }
         }
 
     }
     
-}

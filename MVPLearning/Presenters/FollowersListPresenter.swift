@@ -35,7 +35,7 @@ protocol  FollowListPresenterViewContract {
 class FollowListPresenter:FollowListPresenterContract {
     
     var viewUpdate: ((AssetGroupViewUpdateEvent) -> Void)?
-    
+    var webService :WebServiceContract?
     
     func showSpinner() {
         
@@ -53,7 +53,7 @@ class FollowListPresenter:FollowListPresenterContract {
     var followPresenter:FollowListPresenterViewContract?
     
     init() {
-        
+        webService = WebService()
     }
     
     init(presenter:FollowListPresenterViewContract){
@@ -63,6 +63,30 @@ class FollowListPresenter:FollowListPresenterContract {
     func fetchUsers() {
         
         viewUpdate?(.reloadData)
+        
+        webService?.processService(endPoint: Constant.followers, completion: { response in
+            
+           // print("response is \(response)")
+            
+            switch response {
+               case .success(let data):
+                do {
+                  let followers =   try JSONDecoder().decode([FollowersModel].self, from: data!)
+                    print("followers -----> \(followers)")
+                } catch (let error) {
+                    print("catch -----> \(error.localizedDescription)")
+                    print(String(data: data!, encoding: .utf8) ?? "nothing received")
+                }
+                
+                
+               case .failure(let error):
+                   print(error.localizedDescription)
+               }
+            
+
+            
+            
+        })
         
         //show spinner
         //api request
