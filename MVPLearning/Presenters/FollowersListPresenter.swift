@@ -7,48 +7,12 @@
 
 import Foundation
 
-
-public enum AssetGroupViewUpdateEvent: Equatable {
-    case reloadData
-    case showAnimation
-    case stopAnimation
-    case noResultFoundForSearch(String)
-    case unknownError
-    case hideAccessoryView
-}
-
-protocol  FollowListPresenterContract:FollowListPresenterViewContract {
-    
-    func fetchUsers()
-}
-
-protocol  FollowListPresenterViewContract {
-    
-    var viewUpdate: ((AssetGroupViewUpdateEvent) -> Void)? { get set }
-    
-    func showSpinner();
-    func reloadData();
-    func hideSpinner();
-}
-
-
 class FollowListPresenter:FollowListPresenterContract {
     
-    var viewUpdate: ((AssetGroupViewUpdateEvent) -> Void)?
+    
+    var dataSource: [FollowersModel]?
+    var viewUpdate: ((FollowerListViewUpdateEvent) -> Void)?
     var webService :WebServiceContract?
-    
-    func showSpinner() {
-        
-    }
-    
-    func reloadData() {
-        
-    }
-    
-    func hideSpinner() {
-        
-    }
-    
     
     var followPresenter:FollowListPresenterViewContract?
     
@@ -56,47 +20,43 @@ class FollowListPresenter:FollowListPresenterContract {
         webService = WebService()
     }
     
-    init(presenter:FollowListPresenterViewContract){
-        followPresenter = presenter
-    }
-    
     func fetchUsers() {
         
-        viewUpdate?(.reloadData)
-        
         webService?.processService(endPoint: Constant.followers, completion: { response in
-            
-           // print("response is \(response)")
-            
+                        
             switch response {
                case .success(let data):
                 do {
                   let followers =   try JSONDecoder().decode([FollowersModel].self, from: data!)
+                    self.dataSource = followers
+                    self.viewUpdate?(.reloadData)
                     print("followers -----> \(followers)")
                 } catch (let error) {
                     print("catch -----> \(error.localizedDescription)")
                     print(String(data: data!, encoding: .utf8) ?? "nothing received")
+                    
                 }
                 
                 
                case .failure(let error):
                    print(error.localizedDescription)
                }
-            
-
-            
-            
+                        
         })
-        
-        //show spinner
-        //api request
-        //hidespinner
-        followPresenter?.showSpinner()
-        followPresenter?.reloadData()
-        followPresenter?.hideSpinner()
-
         
     }
     
     
+}
+
+extension FollowListPresenter {
+
+    func HandleActionEvent(eventType: FollowerListHandleEvent) {
+        switch eventType {
+        case .backButton: break
+        case .selectedFollower(let index):
+            let model = dataSource?[index]
+            viewUpdate?(.selectedFollower(model?.login ?? ""))
+        }
+    }
 }

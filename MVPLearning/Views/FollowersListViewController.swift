@@ -8,30 +8,23 @@
 import UIKit
 
 class FollowersListViewController: UIViewController {
-    
-    func showSpinner() {
-    //self.activity indicator show spinner
-    }
-    
-    func reloadData() {
-        //self.activity indicator show spinner
-    }
-    
-    func hideSpinner() {
-        //self.activity hide show spinner
-    }
-    
+    @IBOutlet weak var followerTbl: UITableView!
+
+    let presenter =  FollowListPresenter()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        let presenter =  FollowListPresenter()
        
         presenter.viewUpdate =  { event in
             switch  event{
             case .reloadData:
                 NSLog("reloadData reload data")
+                self.followerTbl.reloadData()
+            case .selectedFollower(let name):
+                print(name)
             default:
                 NSLog("default")
             }
@@ -39,9 +32,37 @@ class FollowersListViewController: UIViewController {
         
         presenter.fetchUsers()
         
-        
     }
 
 
 }
 
+extension FollowersListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return presenter.dataSource?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cellReuseIdentifier: String = "FollowersIdentifier"
+        var cell:UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
+          if (cell == nil) {
+            cell = UITableViewCell(style:UITableViewCell.CellStyle.subtitle, reuseIdentifier:cellReuseIdentifier)
+          }
+        if let followerModel = presenter.dataSource?[indexPath.row] {
+        
+        cell?.textLabel?.text = followerModel.login
+        }
+        return cell!
+    }
+    
+    
+}
+
+extension FollowersListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        presenter.HandleActionEvent(eventType: .selectedFollower(indexPath.row))
+
+    }
+}
