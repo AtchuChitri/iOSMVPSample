@@ -1,0 +1,17 @@
+==========================================================================
+APPLICATION INFORMATION
+===========================================================================
+
+App Display Name : MVPLearning
+App Bundle ID    : com.Vidhvaan.MVPLearning
+Version          : 1.0
+Build Number     : 1
+Release Date     :
+===========================================================================
+
+05 FEB 2021 Key Features Added:
+
++ Mvp Project setup done.
++ Installed Alamofire and AlamofireImage using SPM
++ Restructured project as per MVP Architecture.
+===========================================================================
