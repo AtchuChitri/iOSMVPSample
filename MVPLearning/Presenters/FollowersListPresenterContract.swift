@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
 
 public enum FollowerListViewUpdateEvent: Equatable {
@@ -27,7 +29,9 @@ typealias FollowListPresenterContract = FollowListPresenterViewContract & Follow
 
 /// FollowersListRenderContract
 protocol FollowersListRenderContract {
-    var dataSource:[FollowersModel]? { get set }
+//    var dataSource:[FollowersModel]? { get set }
+    var dataSource:BehaviorRelay<[FollowersModel]?> { get set }
+
 }
 
 /// FollowerListActionEventContract

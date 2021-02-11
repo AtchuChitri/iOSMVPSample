@@ -7,11 +7,12 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 class FollowListPresenter:FollowListPresenterContract {
     
-    
-    var dataSource: [FollowersModel]?
+    let dataSource: BehaviorRelay<[FollowersModel]> = BehaviorRelay(value: [])
+//    var dataSource: [FollowersModel]?
     var viewUpdate: ((FollowerListViewUpdateEvent) -> Void)?
     var webService :WebServiceContract?
     
@@ -29,15 +30,15 @@ class FollowListPresenter:FollowListPresenterContract {
                case .success(let data):
                 do {
                   let followers =   try JSONDecoder().decode([FollowersModel].self, from: data!)
-                    self.dataSource = followers
-                    self.viewUpdate?(.reloadData)
+//                    self.dataSource = followers
+                    self.dataSource.accept(followers) //Adding Data to Data source
+//                    self.viewUpdate?(.reloadData)
                     print("followers -----> \(followers)")
                 } catch (let error) {
                     print("catch -----> \(error.localizedDescription)")
                     print(String(data: data!, encoding: .utf8) ?? "nothing received")
                     
                 }
-                
                 
                case .failure(let error):
                    print(error.localizedDescription)

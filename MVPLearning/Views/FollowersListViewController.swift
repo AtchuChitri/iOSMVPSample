@@ -6,18 +6,19 @@
 //
 
 import UIKit
+import RxSwift
 
 class FollowersListViewController: UIViewController {
     @IBOutlet weak var followerTbl: UITableView!
 
     let presenter =  FollowListPresenter()
+    private let disposeBag = DisposeBag()
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-       
+        //MARK:- Update the UI
         presenter.viewUpdate =  { event in
             switch  event{
             case .reloadData:
@@ -29,11 +30,30 @@ class FollowersListViewController: UIViewController {
                 NSLog("default")
             }
         }
+        presenter.dataSource.asObservable().subscribe { (dataevent) in
+            
+        }.disposed(by: disposeBag)
         
+        //MARK:- Fetch the Data from presenter
         presenter.fetchUsers()
+        
+        
         
     }
 
+    
+//    func setupCellConfiguration() {
+//      //1
+//      europeanChocolates
+//        .bind(to: followerTbl
+//          .rx //2
+//          .items(cellIdentifier: "FollowersIdentifier",
+//                 cellType: UITableViewCell.CellStyle.subtitle)) { //3
+//                  row, chocolate, cell in
+//                  cell.configureWithChocolate(chocolate: chocolate) //4
+//        }
+//        .disposed(by: disposeBag) //5
+//    }
 
 }
 
