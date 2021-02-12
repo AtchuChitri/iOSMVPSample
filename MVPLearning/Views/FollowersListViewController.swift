@@ -13,6 +13,12 @@ class FollowersListViewController: UIViewController {
 
     let presenter =  FollowListPresenter()
     private let disposeBag = DisposeBag()
+    
+//    let europeanChocolates = Observable.just(Chocolate.ofEurope)
+
+    let dataSource = Observable.just(FollowListPresenter().dataSource)
+    
+//    var dataSource : PublishSubject<[FollowersModel]> = PublishSubject()
 
 
     override func viewDidLoad() {
@@ -37,46 +43,60 @@ class FollowersListViewController: UIViewController {
         //MARK:- Fetch the Data from presenter
         presenter.fetchUsers()
         
+        setupCellConfiguration()
         
-        
+                
+    }
+    //MARK:- Cell Configuration
+    func setupCellConfiguration() {
+        let cellReuseIdentifier: String = "FollowersTableViewCell"
+        presenter.dataSource.asObservable()
+          .bind(to: followerTbl.rx.items(cellIdentifier: cellReuseIdentifier, cellType: FollowersTableViewCell.self)) { (row, element, cell) in
+                    //customise cell here
+                }
+             .disposed(by: disposeBag)
+    }
+    //MARK:- Cell TAP Handling
+    func setupCellTapHandling() {
+      followerTbl
+        .rx
+        .modelSelected(FollowersModel.self) //1
+        .subscribe(onNext: { [unowned self] model in // 2
+//          let newValue =  ShoppingCart.sharedCart.chocolates.value + [chocolate]
+//          ShoppingCart.sharedCart.chocolates.accept(newValue) //3
+            
+            print("On Tap Handling --->> : \(model)")
+//            presenter.HandleActionEvent(eventType: .selectedFollower(indexPath.row))
+
+//          if let selectedRowIndexPath = self.tableView.indexPathForSelectedRow {
+//            self.tableView.deselectRow(at: selectedRowIndexPath, animated: true)
+//          } //4
+        })
+        .disposed(by: disposeBag) //5
     }
 
-    
-//    func setupCellConfiguration() {
-//      //1
-//      europeanChocolates
-//        .bind(to: followerTbl
-//          .rx //2
-//          .items(cellIdentifier: "FollowersIdentifier",
-//                 cellType: UITableViewCell.CellStyle.subtitle)) { //3
-//                  row, chocolate, cell in
-//                  cell.configureWithChocolate(chocolate: chocolate) //4
-//        }
-//        .disposed(by: disposeBag) //5
+}
+
+//extension FollowersListViewController: UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return presenter.dataSource?.count ?? 0
 //    }
-
-}
-
-extension FollowersListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.dataSource?.count ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let cellReuseIdentifier: String = "FollowersIdentifier"
-        var cell:UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
-          if (cell == nil) {
-            cell = UITableViewCell(style:UITableViewCell.CellStyle.subtitle, reuseIdentifier:cellReuseIdentifier)
-          }
-        if let followerModel = presenter.dataSource?[indexPath.row] {
-        
-        cell?.textLabel?.text = followerModel.login
-        }
-        return cell!
-    }
-    
-    
-}
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//         let cellReuseIdentifier: String = "FollowersIdentifier"
+//        var cell:UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
+//          if (cell == nil) {
+//            cell = UITableViewCell(style:UITableViewCell.CellStyle.subtitle, reuseIdentifier:cellReuseIdentifier)
+//          }
+//        if let followerModel = presenter.dataSource?[indexPath.row] {
+//
+//        cell?.textLabel?.text = followerModel.login
+//        }
+//        return cell!
+//    }
+//
+//
+//}
 
 extension FollowersListViewController: UITableViewDelegate {
     

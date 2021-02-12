@@ -10,16 +10,20 @@ import RxSwift
 import RxCocoa
 
 class FollowListPresenter:FollowListPresenterContract {
-    
-    let dataSource: BehaviorRelay<[FollowersModel]> = BehaviorRelay(value: [])
+//    var dataSource: BehaviorRelay<[FollowersModel]?>
+    var dataSource: BehaviorRelay<FollowersModelArray>
+
+//    var dataSource: BehaviorRelay<[FollowersModel]?>
+//    var dataSource: BehaviorRelay<[FollowersModel]> = BehaviorRelay(value: [])
 //    var dataSource: [FollowersModel]?
     var viewUpdate: ((FollowerListViewUpdateEvent) -> Void)?
     var webService :WebServiceContract?
     
     var followPresenter:FollowListPresenterViewContract?
     
-    init() {
+    init( datasource : BehaviorRelay<FollowersModelArray> ) {
         webService = WebService()
+        self.dataSource = dataSource
     }
     
     func fetchUsers() {
@@ -57,8 +61,9 @@ extension FollowListPresenter {
         switch eventType {
         case .backButton: break
         case .selectedFollower(let index):
-            let model = dataSource?[index]
-            viewUpdate?(.selectedFollower(model?.login ?? ""))
+            print(index)
+//            let model = dataSource[index]
+//            viewUpdate?(.selectedFollower(model?.login ?? ""))
         }
     }
 }

@@ -30,7 +30,9 @@ typealias FollowListPresenterContract = FollowListPresenterViewContract & Follow
 /// FollowersListRenderContract
 protocol FollowersListRenderContract {
 //    var dataSource:[FollowersModel]? { get set }
-    var dataSource:BehaviorRelay<[FollowersModel]?> { get set }
+//    var dataSource:BehaviorRelay<[FollowersModel]?> { get set }
+    var dataSource:BehaviorRelay<FollowersModelArray> { get set }
+
 
 }
 
