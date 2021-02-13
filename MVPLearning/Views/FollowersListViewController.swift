@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class FollowersListViewController: UIViewController {
     @IBOutlet weak var followerTbl: UITableView!
@@ -18,71 +19,23 @@ class FollowersListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        //MARK:- Update the UI
-        presenter.viewUpdate =  { event in
-            switch  event{
-            case .reloadData:
-                NSLog("reloadData reload data")
-                self.followerTbl.reloadData()
-            case .selectedFollower(let name):
-                print(name)
-            default:
-                NSLog("default")
-            }
-        }
-        presenter.dataSource.asObservable().subscribe { (dataevent) in
-            
-        }.disposed(by: disposeBag)
-        
+        followerTbl.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        setupRx()
         //MARK:- Fetch the Data from presenter
         presenter.fetchUsers()
-        
-        
-        
-    }
-
-    
-//    func setupCellConfiguration() {
-//      //1
-//      europeanChocolates
-//        .bind(to: followerTbl
-//          .rx //2
-//          .items(cellIdentifier: "FollowersIdentifier",
-//                 cellType: UITableViewCell.CellStyle.subtitle)) { //3
-//                  row, chocolate, cell in
-//                  cell.configureWithChocolate(chocolate: chocolate) //4
-//        }
-//        .disposed(by: disposeBag) //5
-//    }
-
-}
-
-extension FollowersListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.dataSource?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let cellReuseIdentifier: String = "FollowersIdentifier"
-        var cell:UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
-          if (cell == nil) {
-            cell = UITableViewCell(style:UITableViewCell.CellStyle.subtitle, reuseIdentifier:cellReuseIdentifier)
-          }
-        if let followerModel = presenter.dataSource?[indexPath.row] {
+    func setupRx() {
         
-        cell?.textLabel?.text = followerModel.login
-        }
-        return cell!
-    }
-    
-    
-}
-
-extension FollowersListViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.dataSource
+            .bind(to: followerTbl.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) { (row, element, cell) in
+                cell.textLabel?.text = "\(element.login)"
+            }
+            .disposed(by: disposeBag)
         
-        presenter.HandleActionEvent(eventType: .selectedFollower(indexPath.row))
-
+        followerTbl.rx.modelSelected(FollowersModel.self).subscribe { (model) in
+            print(model.login)
+        }.disposed(by: disposeBag)
     }
+
 }
